@@ -88,52 +88,76 @@ class Game {
         return false;
    }
 
-   movePiece(startX, startY, endX, endY) {
-    if (!this.isValidMove(startX, startY, endX, endY)) {
-        return false;
-    }
-
-    const piece = this.board[startY][startX];
-    const destinationPiece = this.board[endY][endX];
-
-    if (!destinationPiece) {
-        this.board[endY][endX] = piece;
-        this.board[startY][startX] = null;
-        return true;
-    }
-
-    if (destinationPiece.type === this.PIECE_TYPES.BOULDER) {
-        const pushDirectionX = endX - startX;
-        const pushDirectionY = endY - startY;
-
-        let currentX = endX;
-        let currentY = endY;
-
-        while (currentX >= 0 && currentX < this.BOARD_SIZE && currentY >= 0 && currentY < this.BOARD_SIZE) {
-            const nextPiece = this.board[currentY][currentX];
-
-            if (!nextPiece) {
-                break;
-            }
-
-            this.board[currentY + pushDirectionY][currentX + pushDirectionX] = nextPiece;
-            this.board[currentY][currentX] = null;
-
-            currentX += pushDirectionX;
-            currentY += pushDirectionY;
+    movePiece(startX, startY, endX, endY) {
+        if (!this.isValidMove(startX, startY, endX, endY)) {
+            return false;
         }
 
-        this.board[endY][endX] = piece;
-        this.board[startY][startX] = null;
+        const piece = this.board[startY][startX];
+        const destinationPiece = this.board[endY][endX];
 
-        return true;
-    }
+        if (!destinationPiece) {
+            this.board[endY][endX] = piece;
+            this.board[startY][startX] = null;
+            return true;
+        }
+
+        if (destinationPiece.type === this.PIECE_TYPES.BOULDER) {
+            const pushDirectionX = endX - startX;
+            const pushDirectionY = endY - startY;
+
+            let currentX = endX;
+            let currentY = endY;
+
+            while (currentX >= 0 && currentX < this.BOARD_SIZE && currentY >= 0 && currentY < this.BOARD_SIZE) {
+                const nextPiece = this.board[currentY][currentX];
+
+                if (!nextPiece) {
+                    break;
+                }
+
+                this.board[currentY + pushDirectionY][currentX + pushDirectionX] = nextPiece;
+                this.board[currentY][currentX] = null;
+
+                currentX += pushDirectionX;
+                currentY += pushDirectionY;
+            }
+
+            this.board[endY][endX] = piece;
+            this.board[startY][startX] = null;
+
+            return true;
+        }
 
     return false;
 
    }
-
-   checkWinCon() {
     
-   }
+    checkWinCon() {
+        for (let x = 0; x < this.BOARD_SIZE; x++) {
+            // Check top and bottom borders
+            if (this.board[0][x]?.type === this.PIECE_TYPES.BOULDER) {
+                return this.PLAYER_ONE; // Player one case
+            }
+            if (this.board[this.BOARD_SIZE - 1][x]?.type === this.PIECE_TYPES.BOULDER) {
+                return this.PLAYER_TWO; // Player two case
+            }
+        }
+
+        for (let y = 0; y < this.BOARD_SIZE; y++) {
+            // Check left and right borders
+            if (this.board[y][0]?.type === this.PIECE_TYPES.BOULDER) {
+                return this.PLAYER_ONE;
+            }
+
+            if (this.board[y][this.BOARD_SIZE - 1]?.type === this.PIECE_TYPES.BOULDER) {
+                return this.PLAYER_TWO;
+            }
+        
+        }
+        return null;
+    }
+
+
+
 }
