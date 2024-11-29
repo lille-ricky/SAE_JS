@@ -59,10 +59,77 @@ class Game {
         if (destinationPiece.type === this.PIECE_TYPES.BOULDER) {
             const pushDirectionX = endX - startX;
             const pushDirectionY = endY - startY;
+
+            let currentX = endX;
+            let currentY = endY;
+
+            while (true) {
+                currentX += pushDirectionX;
+                currentY += pushDirectionY;
+
+                if (currentX < 0 || currentX >= this.BOARD_SIZE || currentY < 0 || currentY >= this.BOARD_SIZE) {
+                    return true;
+                }
+
+                const nextPiece = this.board[currentY][currentX];
+
+                if (!nextPiece) {
+                    break;
+                }
+
+                if (nextPiece.type !== this.PIECE_TYPES.BOULDER) {
+                    return false;
+                }
+            }
+
+            return true;
         }
+
+        return false;
    }
 
    movePiece(startX, startY, endX, endY) {
+    if (!this.isValidMove(startX, startY, endX, endY)) {
+        return false;
+    }
+
+    const piece = this.board[startY][startX];
+    const destinationPiece = this.board[endY][endX];
+
+    if (!destinationPiece) {
+        this.board[endY][endX] = piece;
+        this.board[startY][startX] = null;
+        return true;
+    }
+
+    if (destinationPiece.type === this.PIECE_TYPES.BOULDER) {
+        const pushDirectionX = endX - startX;
+        const pushDirectionY = endY - startY;
+
+        let currentX = endX;
+        let currentY = endY;
+
+        while (currentX >= 0 && currentX < this.BOARD_SIZE && currentY >= 0 && currentY < this.BOARD_SIZE) {
+            const nextPiece = this.board[currentY][currentX];
+
+            if (!nextPiece) {
+                break;
+            }
+
+            this.board[currentY + pushDirectionY][currentX + pushDirectionX] = nextPiece;
+            this.board[currentY][currentX] = null;
+
+            currentX += pushDirectionX;
+            currentY += pushDirectionY;
+        }
+
+        this.board[endY][endX] = piece;
+        this.board[startY][startX] = null;
+
+        return true;
+    }
+
+    return false;
 
    }
 
