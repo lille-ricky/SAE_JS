@@ -1,163 +1,29 @@
-/**
- * Game object, in charge of all game logic, the game state and it's rules
- */
-class Game {
-   /**
-    * Game construcor
-    */
-   constructor(){
-    this.BOARD_SIZE = 5;
-    this.PLAYER_ONE = 1;
-    this.PLAYER_TWO = 2;
+export default class Game {
+  constructor() {
+      this.rows = 5; // Number of rows on the board
+      this.cols = 5; // Number of columns on the board
+  }
 
-    this.PIECE_TYPES = {
-        ELEPHANT : 'elephant',
-        RHINO : 'rhino',
-        BOULDER : 'boulder'
-    }
+  setupGame() {
+      console.log("Game is being initialized...");
+  }
 
-    this.reset();
-   } 
+  getInitialPieces() {
+      const pieces = [];
 
-   reset() {
-    this.board = Array(this.BOARD_SIZE).fill().map(()=> 
-        Array(this.BOARD_SIZE).fill(null)
-    );
+      // Add rhinos (first row)
+      for (let col = 0; col < 5; col++) {
+          pieces.push({ type: 'rhino', row: 0, col });
+      }
 
-    this.board[2][2] = { type: this.PIECE_TYPES.BOULDER, orientation: 0};
+      // Add elephants (second row)
+      for (let col = 0; col < 5; col++) {
+          pieces.push({ type: 'elephant', row: 1, col });
+      }
 
-    this.playerReserve = {
-        [this.PLAYER_ONE]: 5,
-        [this.PLAYER_TWO]: 5
-    };
+      // Add a rock in the center
+      pieces.push({ type: 'rock', row: 2, col: 2 });
 
-    this.currentPlayer = this.PLAYER_ONE;
-
-    this.lastMove = null;
-   }
-
-   isValidMove(startX, startY, endX, endY) {
-        const piece = this.board[startX][startY];
-
-        if (!piece || piece.owner !== this.currentPlayer) {
-            return false;
-        }
-
-        const isHorizontalMove = startY === endY && Math.abs(startX - endX);
-        const isVerticalMove = startX === endX && Math.abs(startY - endY);
-
-        if (!isHorizontalMove && !isVerticalMove) {
-            return false;
-        }
-
-        const destinationPiece = this.board[endY][endX];
-
-        if (!destinationPiece) {
-            return true;
-        }
-
-        if (destinationPiece.type === this.PIECE_TYPES.BOULDER) {
-            const pushDirectionX = endX - startX;
-            const pushDirectionY = endY - startY;
-
-            let currentX = endX;
-            let currentY = endY;
-
-            while (true) {
-                currentX += pushDirectionX;
-                currentY += pushDirectionY;
-
-                if (currentX < 0 || currentX >= this.BOARD_SIZE || currentY < 0 || currentY >= this.BOARD_SIZE) {
-                    return true;
-                }
-
-                const nextPiece = this.board[currentY][currentX];
-
-                if (!nextPiece) {
-                    break;
-                }
-
-                if (nextPiece.type !== this.PIECE_TYPES.BOULDER) {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        return false;
-   }
-
-    movePiece(startX, startY, endX, endY) {
-        if (!this.isValidMove(startX, startY, endX, endY)) {
-            return false;
-        }
-
-        const piece = this.board[startY][startX];
-        const destinationPiece = this.board[endY][endX];
-
-        if (!destinationPiece) {
-            this.board[endY][endX] = piece;
-            this.board[startY][startX] = null;
-            return true;
-        }
-
-        if (destinationPiece.type === this.PIECE_TYPES.BOULDER) {
-            const pushDirectionX = endX - startX;
-            const pushDirectionY = endY - startY;
-
-            let currentX = endX;
-            let currentY = endY;
-
-            while (currentX >= 0 && currentX < this.BOARD_SIZE && currentY >= 0 && currentY < this.BOARD_SIZE) {
-                const nextPiece = this.board[currentY][currentX];
-
-                if (!nextPiece) {
-                    break;
-                }
-
-                this.board[currentY + pushDirectionY][currentX + pushDirectionX] = nextPiece;
-                this.board[currentY][currentX] = null;
-
-                currentX += pushDirectionX;
-                currentY += pushDirectionY;
-            }
-
-            this.board[endY][endX] = piece;
-            this.board[startY][startX] = null;
-
-            return true;
-        }
-
-    return false;
-
-   }
-    
-    checkWinCon() {
-        for (let x = 0; x < this.BOARD_SIZE; x++) {
-            // Check top and bottom borders
-            if (this.board[0][x]?.type === this.PIECE_TYPES.BOULDER) {
-                return this.PLAYER_ONE; // Player one case
-            }
-            if (this.board[this.BOARD_SIZE - 1][x]?.type === this.PIECE_TYPES.BOULDER) {
-                return this.PLAYER_TWO; // Player two case
-            }
-        }
-
-        for (let y = 0; y < this.BOARD_SIZE; y++) {
-            // Check left and right borders
-            if (this.board[y][0]?.type === this.PIECE_TYPES.BOULDER) {
-                return this.PLAYER_ONE;
-            }
-
-            if (this.board[y][this.BOARD_SIZE - 1]?.type === this.PIECE_TYPES.BOULDER) {
-                return this.PLAYER_TWO;
-            }
-        
-        }
-        return null;
-    }
-
-
-
+      return pieces;
+  }
 }

@@ -1,0 +1,122 @@
+/* Basic reset and game background */
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background-image: url('../assets/images/siam_background.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  font-family: Arial, sans-serif;
+}
+
+/* Game container with flex layout */
+#game-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+/* Game board styling */
+#board {
+  width: 600px;
+  height: 600px;
+  background-image: url('../assets/images/plateau.jpg');
+  background-size: cover;
+  background-position: center;
+  border: 3px solid #8B4513;
+  position: relative;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+/* Game info panel */
+.game-info {
+  background: rgba(255, 255, 255, 0.9);
+  padding: 20px;
+  border-radius: 10px;
+  margin: 0 20px;
+  min-width: 200px;
+}
+
+/* Player turn indicator */
+.player-turn {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+/* Piece reserve counter */
+.piece-reserve {
+  margin: 10px 0;
+}
+
+/* Clickable zones styling as per requirements */
+.clCliquable {
+  border: green dashed 2px;
+  border-radius: 4px;
+  position: absolute;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.clSurvol {
+  border: yellow dashed 2px;
+  border-radius: 4px;
+}
+
+.clSelection {
+  border: red dashed 2px;
+  border-radius: 4px;
+}
+
+/* Game pieces styling */
+.piece {
+  position: absolute;
+  background: url('../assets/images/pions.jpg') no-repeat;
+  transition: transform 0.3s ease;
+}
+
+/* Last moved piece highlight */
+.last-moved {
+  animation: pulse 2s infinite;
+}
+
+/* Piece sprite positions */
+.rhino-1 { background-position: -25px -16px; width: 208px; height: 208px; }
+.rhino-2 { background-position: -256px -16px; width: 208px; height: 208px; }
+.rhino-3 { background-position: -488px -16px; width: 208px; height: 208px; }
+.rhino-4 { background-position: -720px -16px; width: 208px; height: 208px; }
+.rhino-5 { background-position: -952px -17px; width: 208px; height: 207px; }
+
+.elephant-1 { background-position: -24px -240px; width: 208px; height: 216px; }
+.elephant-2 { background-position: -256px -240px; width: 208px; height: 217px; }
+.elephant-3 { background-position: -488px -241px; width: 208px; height: 215px; }
+.elephant-4 { background-position: -720px -240px; width: 208px; height: 216px; }
+.elephant-5 { background-position: -952px -240px; width: 209px; height: 215px; }
+
+.rock-1 { background-position: -24px -472px; width: 208px; height: 208px; }
+.rock-2 { background-position: -257px -471px; width: 207px; height: 209px; }
+.rock-3 { background-position: -488px -472px; width: 208px; height: 209px; }
+.rock-4 { background-position: -723px -472px; width: 205px; height: 208px; }
+.rock-5 { background-position: -952px -472px; width: 208px; height: 208px; }
+
+/* Reset button styling */
+#reset-button {
+  padding: 10px 20px;
+  background-color: #8B4513;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+/* Animation for last moved piece */
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
