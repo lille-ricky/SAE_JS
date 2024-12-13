@@ -1,4 +1,3 @@
-/* Basic reset and game background */
 body {
   margin: 0;
   padding: 0;
@@ -10,16 +9,14 @@ body {
   font-family: Arial, sans-serif;
 }
 
-/* Game container with flex layout */
 #game-container {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   min-height: 100vh;
   padding: 20px;
 }
 
-/* Game board styling */
 #board {
   width: 600px;
   height: 600px;
@@ -29,9 +26,9 @@ body {
   border: 3px solid #8B4513;
   position: relative;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  margin: 0 auto; 
 }
 
-/* Game info panel */
 .game-info {
   background: rgba(255, 255, 255, 0.9);
   padding: 20px;
@@ -40,7 +37,6 @@ body {
   min-width: 200px;
 }
 
-/* Player turn indicator */
 .player-turn {
   font-size: 1.2em;
   font-weight: bold;
@@ -48,12 +44,45 @@ body {
   color: #333;
 }
 
-/* Piece reserve counter */
 .piece-reserve {
-  margin: 10px 0;
+  margin: 20px 0;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 8px;
 }
 
-/* Clickable zones styling as per requirements */
+.reserve-pieces {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.reserve-piece {
+  width: 50px;
+  height: 50px;
+  border: 2px solid #8B4513;
+  border-radius: 4px;
+  cursor: pointer;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.rhino-piece {
+  background-image: url('../assets/images/rhino1.png');
+  background-size: contain;
+}
+
+.elephant-piece {
+  background-image: url('../assets/images/elephant1.png');
+  background-size: contain;
+}
+
+.reserve-piece:hover {
+  border-color: yellow;
+}
+
 .clCliquable {
   border: green dashed 2px;
   border-radius: 4px;
@@ -72,38 +101,37 @@ body {
   border-radius: 4px;
 }
 
-/* Game pieces styling */
 .piece {
   position: absolute;
-  background: url('../assets/images/pions.jpg') no-repeat;
-  transition: transform 0.3s ease;
+  width: 80px;
+  height: 80px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
-/* Last moved piece highlight */
 .last-moved {
   animation: pulse 2s infinite;
 }
 
-/* Piece sprite positions */
-.rhino-1 { background-position: -25px -16px; width: 208px; height: 208px; }
-.rhino-2 { background-position: -256px -16px; width: 208px; height: 208px; }
-.rhino-3 { background-position: -488px -16px; width: 208px; height: 208px; }
-.rhino-4 { background-position: -720px -16px; width: 208px; height: 208px; }
-.rhino-5 { background-position: -952px -17px; width: 208px; height: 207px; }
+.elephant-1 { background-image: url('../assets/images/elephant1.png'); }
+.elephant-2 { background-image: url('../assets/images/elephant2.png'); }
+.elephant-3 { background-image: url('../assets/images/elephant3.png'); }
+.elephant-4 { background-image: url('../assets/images/elephant4.png'); }
+.elephant-5 { background-image: url('../assets/images/elephant5.png'); }
 
-.elephant-1 { background-position: -24px -240px; width: 208px; height: 216px; }
-.elephant-2 { background-position: -256px -240px; width: 208px; height: 217px; }
-.elephant-3 { background-position: -488px -241px; width: 208px; height: 215px; }
-.elephant-4 { background-position: -720px -240px; width: 208px; height: 216px; }
-.elephant-5 { background-position: -952px -240px; width: 209px; height: 215px; }
+.rhino-1 { background-image: url('../assets/images/rhino1.png'); }
+.rhino-2 { background-image: url('../assets/images/rhino2.png'); }
+.rhino-3 { background-image: url('../assets/images/rhino3.png'); }
+.rhino-4 { background-image: url('../assets/images/rhino4.png'); }
+.rhino-5 { background-image: url('../assets/images/rhino5.png'); }
 
-.rock-1 { background-position: -24px -472px; width: 208px; height: 208px; }
-.rock-2 { background-position: -257px -471px; width: 207px; height: 209px; }
-.rock-3 { background-position: -488px -472px; width: 208px; height: 209px; }
-.rock-4 { background-position: -723px -472px; width: 205px; height: 208px; }
-.rock-5 { background-position: -952px -472px; width: 208px; height: 208px; }
+.rock-1 { background-image: url('../assets/images/boulder1.png'); }
+.rock-2 { background-image: url('../assets/images/boulder2.png'); }
+.rock-3 { background-image: url('../assets/images/boulder3.png'); }
+.rock-4 { background-image: url('../assets/images/boulder4.png'); }
+.rock-5 { background-image: url('../assets/images/boulder5.png'); }
 
-/* Reset button styling */
 #reset-button {
   padding: 10px 20px;
   background-color: #8B4513;
@@ -114,9 +142,50 @@ body {
   margin-top: 20px;
 }
 
-/* Animation for last moved piece */
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-  100% { transform: scale(1); }
+.orientation-selector {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 100;
+}
+
+.orientation-button {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  border: none;
+  background-color: rgba(255, 255, 255, 0.9);
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+.orientation-button:hover {
+  background-color: rgba(255, 255, 0, 0.9);
+}
+
+.orientation-button.north {
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.orientation-button.south {
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.orientation-button.east {
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.orientation-button.west {
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
 }
